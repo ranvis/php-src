@@ -25,6 +25,7 @@
 #include "observer.h"
 #include "fiber.h"
 #include "iterators.h"
+#include "object_handlers.h"
 #include "zend_attributes.h"
 #include "zend_enum.h"
 #include "zend_interfaces.h"
@@ -960,6 +961,7 @@ PHP_MINIT_FUNCTION(zend_test)
 	zend_test_observer_init(INIT_FUNC_ARGS_PASSTHRU);
 	zend_test_fiber_init();
 	zend_test_iterators_init();
+	zend_test_object_handlers_init();
 
 	return SUCCESS;
 }
