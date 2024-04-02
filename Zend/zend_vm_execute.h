@@ -4087,7 +4087,10 @@ static ZEND_VM_COLD ZEND_OPCODE_HANDLER_RET ZEND_FASTCALL ZEND_BOOL_NOT_SPEC_CON
 		}
 	} else {
 		SAVE_OPLINE();
-		ZVAL_BOOL(EX_VAR(opline->result.var), !i_zend_is_true(val));
+		if (EXPECTED(Z_TYPE_P(val) != IS_OBJECT) || EXPECTED(!Z_OBJ_HANDLER_P(val, do_operation))
+				|| EXPECTED(Z_OBJ_HANDLER_P(val, do_operation)(ZEND_BOOL_NOT, EX_VAR(opline->result.var), val, NULL) != SUCCESS)) {
+			ZVAL_BOOL(EX_VAR(opline->result.var), !i_zend_is_true(val));
+		}
 
 		ZEND_VM_NEXT_OPCODE_CHECK_EXCEPTION();
 	}
@@ -14214,7 +14217,10 @@ static ZEND_OPCODE_HANDLER_RET ZEND_FASTCALL ZEND_BOOL_NOT_SPEC_TMPVAR_HANDLER(Z
 		}
 	} else {
 		SAVE_OPLINE();
-		ZVAL_BOOL(EX_VAR(opline->result.var), !i_zend_is_true(val));
+		if (EXPECTED(Z_TYPE_P(val) != IS_OBJECT) || EXPECTED(!Z_OBJ_HANDLER_P(val, do_operation))
+				|| EXPECTED(Z_OBJ_HANDLER_P(val, do_operation)(ZEND_BOOL_NOT, EX_VAR(opline->result.var), val, NULL) != SUCCESS)) {
+			ZVAL_BOOL(EX_VAR(opline->result.var), !i_zend_is_true(val));
+		}
 		zval_ptr_dtor_nogc(EX_VAR(opline->op1.var));
 		ZEND_VM_NEXT_OPCODE_CHECK_EXCEPTION();
 	}
@@ -38144,7 +38150,10 @@ static ZEND_OPCODE_HANDLER_RET ZEND_FASTCALL ZEND_BOOL_NOT_SPEC_CV_HANDLER(ZEND_
 		}
 	} else {
 		SAVE_OPLINE();
-		ZVAL_BOOL(EX_VAR(opline->result.var), !i_zend_is_true(val));
+		if (EXPECTED(Z_TYPE_P(val) != IS_OBJECT) || EXPECTED(!Z_OBJ_HANDLER_P(val, do_operation))
+				|| EXPECTED(Z_OBJ_HANDLER_P(val, do_operation)(ZEND_BOOL_NOT, EX_VAR(opline->result.var), val, NULL) != SUCCESS)) {
+			ZVAL_BOOL(EX_VAR(opline->result.var), !i_zend_is_true(val));
+		}
 
 		ZEND_VM_NEXT_OPCODE_CHECK_EXCEPTION();
 	}

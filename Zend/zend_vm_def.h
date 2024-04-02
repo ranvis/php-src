@@ -974,7 +974,10 @@ ZEND_VM_COLD_CONST_HANDLER(14, ZEND_BOOL_NOT, CONST|TMPVAR|CV, ANY)
 		}
 	} else {
 		SAVE_OPLINE();
-		ZVAL_BOOL(EX_VAR(opline->result.var), !i_zend_is_true(val));
+		if (EXPECTED(Z_TYPE_P(val) != IS_OBJECT) || EXPECTED(!Z_OBJ_HANDLER_P(val, do_operation))
+				|| EXPECTED(Z_OBJ_HANDLER_P(val, do_operation)(ZEND_BOOL_NOT, EX_VAR(opline->result.var), val, NULL) != SUCCESS)) {
+			ZVAL_BOOL(EX_VAR(opline->result.var), !i_zend_is_true(val));
+		}
 		FREE_OP1();
 		ZEND_VM_NEXT_OPCODE_CHECK_EXCEPTION();
 	}
